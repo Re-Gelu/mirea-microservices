@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { MovieSessionDTO, MovieSessionUpdateDTO } from './dto';
 import { MovieSessionService } from './movie-session.service';
@@ -21,6 +21,7 @@ export class MovieSessionController {
 
   @Post()
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({ type: MovieSessionDTO })
   async create(
     @Body() data: MovieSessionDTO,
     @Query('crudQuery') crudQuery: string,
@@ -32,12 +33,14 @@ export class MovieSessionController {
 
   @Get()
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({ type: [MovieSessionDTO] })
   async findMany(@Query('crudQuery') crudQuery: string) {
     return await this.movieSessionService.findMany({ crudQuery });
   }
 
   @Get(':id')
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({ type: MovieSessionDTO })
   async findOne(
     @Param('id', ParseIntPipe) id: number,
     @Query('crudQuery') crudQuery: string,
@@ -47,6 +50,7 @@ export class MovieSessionController {
 
   @Patch(':id')
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({ type: MovieSessionDTO })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: MovieSessionUpdateDTO,
@@ -59,6 +63,7 @@ export class MovieSessionController {
 
   @Delete(':id')
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({ type: MovieSessionDTO })
   async remove(
     @Param('id', ParseIntPipe) id: number,
     @Query('crudQuery') crudQuery: string,

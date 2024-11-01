@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { MovieDTO, MovieUpdateDTO } from './dto';
 import { MovieService } from './movie.service';
@@ -21,6 +21,7 @@ export class MovieController {
 
   @Post()
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({ type: MovieDTO })
   async create(@Body() data: MovieDTO, @Query('crudQuery') crudQuery: string) {
     await this.movieService.sendTestMessage('NIGGERS');
 
@@ -31,6 +32,9 @@ export class MovieController {
 
   @Get()
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({
+    type: [MovieDTO],
+  })
   async findMany(@Query('crudQuery') crudQuery: string) {
     await this.movieService.sendTestMessage('Movies: findMany');
 
@@ -39,6 +43,9 @@ export class MovieController {
 
   @Get(':id')
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({
+    type: MovieDTO,
+  })
   async findOne(
     @Param('id', ParseIntPipe) id: number,
     @Query('crudQuery') crudQuery: string,
@@ -48,6 +55,9 @@ export class MovieController {
 
   @Patch(':id')
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({
+    type: [MovieDTO],
+  })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: MovieUpdateDTO,
@@ -60,6 +70,9 @@ export class MovieController {
 
   @Delete(':id')
   @ApiQuery({ name: 'crudQuery', required: false })
+  @ApiOkResponse({
+    type: [MovieDTO],
+  })
   async remove(
     @Param('id', ParseIntPipe) id: number,
     @Query('crudQuery') crudQuery: string,
