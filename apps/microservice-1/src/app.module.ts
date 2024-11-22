@@ -2,11 +2,10 @@ import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import { PrismaCrudModule } from 'nestjs-prisma-crud';
 
 import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MovieSessionModule } from './movie-session/movie-session.module';
-import { MovieModule } from './movie/movie.module';
 
 @Module({
   imports: [
@@ -26,8 +25,20 @@ import { MovieModule } from './movie/movie.module';
       },
     }),
 
-    MovieModule,
-    MovieSessionModule,
+    ClientsModule.register([
+      {
+        name: 'TEST_SERVICE_PUBLISHER',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://rabbit-mq:5672'],
+          queue: 'test_queue',
+          queueOptions: {
+            durable: true,
+          },
+          persistent: true,
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

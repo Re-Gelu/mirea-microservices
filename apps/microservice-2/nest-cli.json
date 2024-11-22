@@ -1,8 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/microservice-2/src",
   "compilerOptions": {
+    "plugins": ["@nestjs/swagger"],
     "deleteOutDir": true
   }
 }

@@ -1,0 +1,38 @@
+version: "3.10"
+   
+services:
+
+  microservices:
+    container_name: microservices
+    build: ./
+    ports:
+      - 8000:8000
+      - 8001:8001
+    env_file:
+      - .env.docker
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/mirea-microservices"
+    depends_on:
+      - db
+      - rabbit-mq
+  
+  db:
+    container_name: 'database'
+    image: postgres:17-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mirea-microservices
+
+  rabbit-mq:
+    container_name: 'rabbit-mq'
+    image: rabbitmq:4.0-management
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+volumes:
+  postgres_data:
